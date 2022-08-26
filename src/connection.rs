@@ -601,6 +601,9 @@ mod amqp_url {
                         .fail();
                     }
                 }
+                "information" => {
+                    options = options.information(Some(String::from(v)));
+                }
                 parameter => {
                     return UrlUnsupportedParameterSnafu {
                         url: url.clone(),
@@ -694,6 +697,12 @@ mod amqp_url {
         fn auth_mechanism() {
             let options = decode_s("amqp://?auth_mechanism=external").unwrap();
             assert_eq!(options, ConnectionOptions::default().auth(Auth::External));
+        }
+
+        #[test]
+        fn information() {
+            let options = decode_s("amqp://?information=test").unwrap();
+            assert_eq!(options, ConnectionOptions::default().information(Some(String::from("test"))));
         }
 
         #[test]
